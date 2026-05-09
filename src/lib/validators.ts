@@ -29,10 +29,10 @@ export const memberAddSchema = z.object({
 export const taskCreateSchema = z.object({
   projectId: z.string().min(1),
   title: z.string().trim().min(3).max(120),
-  description: z.string().trim().min(10).max(500),
+  description: z.string().trim().min(1).max(500).optional().or(z.literal("")),
   dueDate: z.string().optional(),
   priority: z.enum(["LOW", "MEDIUM", "HIGH", "URGENT"]),
-  assigneeId: z.string().min(1).optional(),
+  assigneeId: z.string().min(1).nullable().or(z.literal("")).transform(val => val === "" ? null : val).optional(),
 });
 
 export const taskUpdateSchema = z.object({
