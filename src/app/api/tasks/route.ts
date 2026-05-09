@@ -51,7 +51,7 @@ export async function POST(request: Request) {
     data: {
       projectId: body.projectId,
       title: body.title,
-      description: body.description,
+      description: body.description ?? "",
       priority: body.priority,
       dueDate: body.dueDate ? new Date(body.dueDate) : null,
       assigneeId: body.assigneeId ?? null,
