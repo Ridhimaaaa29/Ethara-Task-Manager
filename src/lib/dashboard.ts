@@ -12,7 +12,15 @@ function toIso(value: Date | null) {
 }
 
 export async function getDashboardData(user: SessionUser) {
-  const projectFilter = user.role === "ADMIN" ? {} : { members: { some: { userId: user.id } } };
+  // Show all projects if ADMIN; otherwise show projects user owns or is a member of
+  const projectFilter = user.role === "ADMIN" 
+    ? {} 
+    : {
+        OR: [
+          { ownerId: user.id },
+          { members: { some: { userId: user.id } } },
+        ],
+      };
 
   const projects = await prisma.project.findMany({
     where: projectFilter,
